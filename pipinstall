@@ -19,3 +19,4 @@ x_values, y_values = euler(equation, x0, y0, h, n)
 print("\nResults: ")
 for i in range(len(x_values)):
     print(f"Iteration {i }: x = {x_values[i]}, y = {y_values[i]}")
+
