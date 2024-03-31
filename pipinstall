@@ -1,0 +1,21 @@
+#Euler
+from math import *
+def euler(f, x0, y0, h, n):
+    x_values = [x0]
+    y_values = [y0]
+    for i in range(1, n+1):
+        x_new = x_values[i - 1] + h
+        y_new = y_values[i - 1] + h * f(x_values[i - 1], y_values[i - 1])
+        x_values.append(x_new)
+        y_values.append(y_new)
+    return x_values, y_values
+equation_input = input("Enter the differential equation in terms of x and y: ")
+equation = lambda x, y: eval(equation_input)
+x0 = float(input("Enter initial value of x: "))
+y0 = float(input("Enter initial value of y: "))
+h = float(input("Enter step size (h): "))
+n = int(input("Enter number of iterations (n): "))
+x_values, y_values = euler(equation, x0, y0, h, n)
+print("\nResults: ")
+for i in range(len(x_values)):
+    print(f"Iteration {i }: x = {x_values[i]}, y = {y_values[i]}")
