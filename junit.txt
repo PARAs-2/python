@@ -1,0 +1,350 @@
+		Practical no 3
+Aim: Install Selenium server and demonstrate it using a script in Java/PHP.
+package Test;
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+public class myclass {
+
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		int a=10,b=20;
+		System.out.println("hi....");
+		System.out.println(a+b);
+		System.out.println("Demo....");
+		WebDriver driver=new FirefoxDriver();
+		driver.get("https://www.facebook.com/");
+		driver.manage().window().maximize();
+	}
+
+}
+------------------------------------------------------------------------------------------------------------------------
+		Practical NO 4 
+Aim : Write and test a program to login a specific web page. 
+
+JUnit_Test.java
+package mypack;
+
+import static org.junit.Assert.*;
+
+
+import org.junit.Test;
+
+public class Junit_test {
+
+	@Test
+	public void test() {
+		String str="This is what demo of Junit";
+		assertEquals("This is what demo of Junit",str);
+				
+	}
+
+}
+
+
+TestRunner.java
+
+package mypacks;
+import mypack.Junit_test;
+
+import org.junit.runner.JUnitCore;
+import org.junit.runner.Result;
+import org.junit.runner.notification.Failure;
+public class myclass {
+
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		Result res= JUnitCore.runClasses(Junit_test.class);
+		for (Failure failuer: res.getFailures())
+		{
+			System.out.println(failuer.toString());
+		}
+		System.out.println("RESULT === "+res.wasSuccessful());
+	}
+
+	}
+
+
+package mypack;
+import org.junit.runner.JUnitCore;
+import org.junit.runner.Result;
+import org.junit.runner.notification.Failure;
+public class TestRunner {
+
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		Result res= JUnitCore.runClasses(junit_test.class);
+		for (Failure failuer: res.getFailures())
+		{
+			System.out.println(failuer.toString());
+		}
+		System.out.println("RESULT === "+res.wasSuccessful());
+	}
+
+	}
+
+-------------------------------------------------------------------------------------------------------------------------
+		Practical no 5
+
+Aim: Write and test a program to update 10 student records into table into 
+Excel file
+
+package mypackage;
+
+import jxl.*;
+import jxl.write.*;
+import java.io.*;
+import org.junit.Test;
+
+public class countstuds {
+    @Test
+    public void testImportexport1() throws Exception {
+        FileInputStream fi = new FileInputStream("input.xls"); // Update input file path
+        Workbook w = Workbook.getWorkbook(fi);
+        Sheet s = w.getSheet(0);
+        String a[][] = new String[s.getRows()][s.getColumns()];
+        FileOutputStream fo = new FileOutputStream("output.xls"); // Update output file path
+        WritableWorkbook wwb = Workbook.createWorkbook(fo);
+        WritableSheet ws = wwb.createSheet("result1", 0);
+        Label l1 = new Label(6, 0, "Results");
+        ws.addCell(l1);
+
+        for (int i = 0; i < s.getRows(); i++) {
+            for (int j = 0; j < s.getColumns(); j++) {
+                a[i][j] = s.getCell(j, i).getContents();
+                Label l2 = new Label(j, i, a[i][j]);
+                ws.addCell(l2);
+            }
+        }
+
+        for (int i = 1; i < s.getRows(); i++) {
+            boolean isFail = false;
+            for (int j = 2; j < s.getColumns(); j++) {
+                a[i][j] = s.getCell(j, i).getContents();
+                int x = Integer.parseInt(a[i][j]);
+                if (x <= 35) {
+                    isFail = true;
+                    break; // Break if any subject has a score less than or equal to 35
+                }
+            }
+            Label resultLabel;
+            if (isFail) {
+                resultLabel = new Label(6, i, "Fail");
+            } else {
+                resultLabel = new Label(6, i, "Pass");
+            }
+            ws.addCell(resultLabel);
+        }
+
+        wwb.write();
+        wwb.close();
+    }
+}-----------------------------------------------------------------------------------------------------------------------------------------
+
+				Practical no 6
+Aim : Write and test a program to select the number of students who have 
+scored more than 60 in any one subject (or all subjects).
+
+
+package mypackage;
+
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+
+import org.junit.Test;
+import jxl.*;
+import jxl.read.*;
+import jxl.write.*;
+import jxl.write.Label;
+
+public class prac6 {
+    @Test
+    public void testImportexport1() throws Exception {
+        FileInputStream fi = new FileInputStream("sample_data.xls"); // Update the file path
+        Workbook w = Workbook.getWorkbook(fi);
+        Sheet s = w.getSheet(0);
+        String a[][] = new String[s.getRows()][s.getColumns()];
+        FileOutputStream fo = new FileOutputStream("result.xls"); // Update the file path
+        WritableWorkbook wwb = Workbook.createWorkbook(fo);
+        WritableSheet ws = wwb.createSheet("result", 0);
+        int c = 0;
+
+        for (int i = 0; i < s.getRows(); i++) {
+            boolean scoredAbove60 = false; // Flag to track if student scored above 60 in any subject
+            for (int j = 0; j < s.getColumns(); j++) {
+                if (i >= 1) {
+                    String cellContent = s.getCell(j, i).getContents();
+                    if (!cellContent.isEmpty()) {
+                        int score = Integer.parseInt(cellContent);
+                        if (score > 60) {
+                            scoredAbove60 = true;
+                            break; // Exit the loop if student scored above 60 in any subject
+                        }
+                    }
+                }
+                a[i][j] = s.getCell(j, i).getContents();
+                Label l2 = new Label(j, i - c, a[i][j]);
+                ws.addCell(l2);
+            }
+            if (!scoredAbove60) {
+                c++; // Increment count if student didn't score above 60 in any subject
+            }
+        }
+        wwb.write();
+        wwb.close();
+    }
+}-------------------------------------------------------------------------------------------------------------------------------------------------
+Practical No 7
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.remote.DesiredCapabilities;
+
+public class nlinks
+{
+static String driverPath = "E:\\st\\geckodriver\\geckodriver-v0.24.0-win32\\geckodriver.exe";
+public static WebDriver driver;
+public static void main(String args[])
+{
+System.setProperty("webdriver.gecko.driver",driverPath);
+DesiredCapabilities capabilities = DesiredCapabilities.firefox();
+capabilities.setCapability("marionette",true);
+driver= new FirefoxDriver(capabilities);
+driver.get("http://gmail.com/");
+java.util.List < WebElement > links = driver.findElements(By.tagName("a"));
+System.out.println("Total links are"+links.size());
+for (int i = 0; i<links.size(); i=i+1)
+{
+System.out.println("Link "+ i + " Link name "+ links.get(i).getText());
+}
+}
+}
+-------------------------------------------------------------------------------------------------------------------------------------------------
+			Practical No 8 
+Q.Write and test a program to get the number of items in a list / combo 
+box.
+
+package mypack;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement; 
+import org.openqa.selenium. firefox. FirefoxDriver;
+import org.openqa.selenium.support.ui.Select;
+
+public class p8 {
+	static String driverPath ="E:\\st\\geckodriver\\geckodriver-v0.24.0-win32";
+ 
+		public static WebDriver driver;
+
+		public static void main(String[] args) {
+// TODO Auto-generated method stub
+			System.setProperty("webdriver.gecko.driver",driverPath);
+			WebDriver driver=new FirefoxDriver();
+			driver.get("https://www.facebook.com/reg/");
+			Select se = new Select(driver.findElement(By.id("month")));
+			java.util.List < WebElement > mylist=se.getOptions();
+			mylist.size();
+			System.out.println("Number of items="+mylist.size());
+}
+}
+
+
+----------------------------------------------------------------------------------------------------------------------------------------------------
+			PRACTICAL NO 9
+
+Q. Write and test a program to count the number of check boxes on the 
+page checked and unchecked count.
+**First create a html file using Notepad**
+Practchk.html
+<!DOCTYPE html>
+<html>
+<body>
+<form>
+<h2>Text Input</h2>
+First Name:</br>
+<input type="text" name="Firstname">
+</br>
+Last Name:</br>
+<input type="text" name="lastname">
+</br>
+<h2>Select Gender</h2>
+<input type="radio" name="gender" value="male" checked>Male</br>
+<input type="radio" name="gender" value="female">Female</br>
+<input type="radio" name="gender" value="others">Others</br>
+<h2>Select Languages Known</h2>
+<input type="checkbox" name="lang" value="Java">Java</br>
+<input type="checkbox" name="lang" value="Php">Php</br>
+<input type="checkbox" name="lang" value="ASP.net">.Net</br>
+<input type="checkbox" name="lang" value="Python" checked="checked">Python</br>
+<input type="submit" value="submit"></br>
+</form>
+</body>
+</html>
+
+
+.JAVA FILE
+
+import java.util.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.firefox.FirefoxDriver;
+
+public class webpage1 {
+static String driverPath="F:\\st\\geckodriver\\geckodriver-v0.24.0-win64";
+public static WebDriver driver;
+public static void main(String[] args)
+{
+// TODO auto generated method stub
+	System.setProperty("webdriver.gecto.driver",driverPath);
+	WebDriver driver=new FirefoxDriver();
+	driver.get("web.html path");
+	int radiochk=0,checkboxchk=0;
+	int radiounchk=0,checkboxunchk=0;
+	List<WebElement>els=driver.findElements(By.xpath("//input[@type='radio']"));
+	for(WebElement el:els)
+		{
+		if(el.isSelected())
+		{
+			radiochk++;
+		}
+		else
+		{
+			radiounchk++;
+		}
+		}
+	System.out.println("Radio Buttons");
+	System.out.println("Total Checked items"+ radiochk);
+	System.out.println("Total unChecked items"+ radiounchk);
+	List<WebElement>ebox=driver.findElements(By.xpath("//input[@type='checkbox']"
+
+			));
+	for(WebElement el:ebox)
+	{
+		if(el.isSelected())
+		{
+			checkboxchk++;
+		}
+		else{
+			checkboxunchk++;
+		}
+	}
+
+	System.out.println("Checkboxes");
+	System.out.println("Total Checked items"+ checkboxchk);
+	System.out.println("Total unChecked items"+ checkboxunchk);
+	}
+}
+
+
